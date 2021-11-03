@@ -38,15 +38,15 @@ First, let's retrive the corresponding crime scene report.
 
 ```sql
 SELECT 
-	date,
-	type,
-	description,
-	city
+  date,
+  type,
+  description,
+  city
 FROM crime_scene_report
 WHERE 
-	city = 'SQL City' AND 
-	type = 'murder' AND
-	date = '20180115';
+  city = 'SQL City' AND 
+  type = 'murder' AND
+  date = '20180115';
 ```    
 
 | date     | type   | description                                                                                                                                                                               | city     |
@@ -59,10 +59,10 @@ Now, let's find the full name and ``id`` of the first witness.
 
 ```sql
 SELECT 
-	id,
-	name,
-	address_number,
-	address_street_name AS str_name
+  id,
+  name,
+  address_number,
+  address_street_name AS str_name
 FROM person
 WHERE str_name = 'Northwestern Dr'
 ORDER BY address_number DESC
@@ -78,14 +78,14 @@ Next, let's look for the ``id`` and last name of the second witness.
 
 ```sql
 SELECT 
-	id,
-	name,
-	address_number,
-	address_street_name AS str_name
+  id,
+  name,
+  address_number,
+  address_street_name AS str_name
 FROM person
 WHERE 
-    str_name = 'Franklin Ave' AND
-    name LIKE 'Annabel%';
+  str_name = 'Franklin Ave' AND
+  name LIKE 'Annabel%';
 ```
 | id    | name           | address_number | str_name      |
 |-------|----------------|----------------|---------------|
@@ -99,11 +99,11 @@ Let's use the IDs of the witnesses to look for their interviews regarding the mu
 
 ```sql
 SELECT 
-	person_id,
-	transcript
+  person_id,
+  transcript
 FROM interview
 WHERE 
-	person_id = 14887 OR person_id = 16371;
+  person_id = 14887 OR person_id = 16371;
 ```    
 
 ``Mr.Schapiro (First witness) said: "I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W"."``
@@ -118,11 +118,11 @@ First let's find the gym's member name whose id starts with '48Z'.
 
 ```sql
 SELECT 
-	id,
-	person_id,
-	name,
-	membership_start_date,
-	membership_status
+  id,
+  person_id,
+  name,
+  membership_start_date,
+  membership_status
 FROM get_fit_now_member
 WHERE id LIKE '48Z%';
 ```
@@ -146,15 +146,15 @@ Next, let's find the owner of the car whose car plate included 'H42W'.
 ```sql
 
 SELECT 
-	id,
-	age,
-	height,
-	eye_color,
-	hair_color,
-	gender,
-	plate_number,
-	car_make,
-	car_model
+  id,
+  age,
+  height,
+  eye_color,
+  hair_color,
+  gender,
+  plate_number,
+  car_make,
+  car_model
 FROM drivers_license
 WHERE plate_number LIKE '%H42W%';
 ```
@@ -171,11 +171,11 @@ Now, let's find the names using the license IDs found on the previous query.
 
 ```sql
 SELECT
-	id,
-	name,
-	license_id,
-	address_number,
-	address_street_name AS str_name
+  id,
+  name,
+  license_id,
+  address_number,
+  address_street_name AS str_name
 FROM person
 WHERE license_id IN (183779, 423327, 664760);
 ```
@@ -196,17 +196,17 @@ Based on what was found from the statement of Mr.Schapiro let's see if 'Jeremy B
 
 ```sql
 SELECT 
-	checkin.membership_id,
-	members.name,
-	checkin.check_in_date,
-	checkin.check_in_time,
-	checkin.check_out_time
+  checkin.membership_id,
+  members.name,
+  checkin.check_in_date,
+  checkin.check_in_time,
+  checkin.check_out_time
 FROM get_fit_now_member AS members
 INNER JOIN get_fit_now_check_in AS checkin
-	ON members.id = checkin.membership_id
+  ON members.id = checkin.membership_id
 WHERE 
-	check_in_date = '20180109' AND 
-	name = 'Jeremy Bowers';
+  check_in_date = '20180109' AND 
+  name = 'Jeremy Bowers';
 ```    
 
 | membership_id | name          | check_in_date | check_in_time | check_out_time |
@@ -242,14 +242,14 @@ First let's see the interview transcript from Jeremy Bowers (Murderer).
 
 ```sql
 SELECT 
-	person.id,
-    person.name,
-	interview.transcript
+  person.id,
+  person.name,
+  interview.transcript
 FROM person
 INNER JOIN interview
-    ON person.id = interview.person_id
+  ON person.id = interview.person_id
 WHERE 
-	person.name = 'Jeremy Bowers';
+  person.name = 'Jeremy Bowers';
 ```    
 
 ``His statement was: "I was hired by a woman with a lot of money. I don't know her name but I know she's around 5'5" (65") or 5'7" (67"). She has red hair and she drives a Tesla Model S. I know that she attended the SQL Symphony Concert 3 times in December 2017."``
@@ -260,27 +260,24 @@ The join of the  ``person``, ``drivers_license``, ``facebook_event_checkin`` and
 
 ```sql
 SELECT 
-	t1.id,
-	t1.name,
-	t1.ssn,
-	t4.annual_income,
-	t3.event_name,
-	t3.date
+  t1.id,
+  t1.name,
+  t1.ssn,
+  t4.annual_income,
+  t3.event_name,
+  t3.date
 FROM person AS t1
 INNER JOIN drivers_license AS t2
-	ON t1.license_id = t2.id
+  ON t1.license_id = t2.id
 INNER JOIN facebook_event_checkin AS t3
-	ON t1.id = t3.person_id
+  ON t1.id = t3.person_id
 INNER JOIN income AS t4
-	ON t1.ssn = t4.ssn
+  ON t1.ssn = t4.ssn
 WHERE 
-	t2.car_make = 'Tesla' 
-	AND 
-	t2.car_model = 'Model S' 
-	AND
-	t2.gender = 'female'
-	AND 
-	t2.hair_color = 'red'	
+  t2.car_make = 'Tesla' AND
+  t2.car_model = 'Model S' AND
+  t2.gender = 'female' AND 
+  t2.hair_color = 'red'	
 ORDER BY t1.id;
 ```
 
